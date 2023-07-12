@@ -33,10 +33,19 @@ struct MemoryView: View {
     var geometry: GeometryProxy
     
     var body: some View {
+#if !targetEnvironment(macCatalyst)
         let memorySwipe = DragGesture(minimumDistance: 20)
             .onEnded { _ in
                 memory = 0.0
             }
+#else
+        let memorySwipe = TapGesture(count: 2)
+            .onEnded { _ in
+                memory = 0.0
+            }
+        
+#endif
+            
         HStack {
             Spacer()
             Text("\(memory)")
